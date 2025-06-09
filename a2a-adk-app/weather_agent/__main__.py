@@ -22,6 +22,7 @@ from a2a.types import (
     AgentSkill,
 )
 from starlette.applications import Starlette
+from load_mcp import load_mcp_tools
 
 
 load_dotenv()
@@ -30,10 +31,14 @@ logging.basicConfig()
 
 
 @click.command()
-@click.option("--host", "host", default="localhost")
-@click.option("--port", "port", default=10001)
-def main(host: str, port: int):
-
+@click.option("--host", "host", default="localhost", help="服务器绑定的主机名（默认为 localhost,可以指定具体本机ip）")
+@click.option("--port", "port", default=10005,help="服务器监听的端口号（默认为 10005）")
+@click.option("--prompt", "agent_prompt_file", default="prompt.txt",help="Agent 的 prompt 文件路径（默认为 prompt.txt）")
+@click.option("--model", "model_name", default="deepseek-chat",help="使用的模型名称（如 deepseek-chat）")
+@click.option("--provider", "provider", default="deepseek", help="模型提供方名称（如 deepseek、openai 等）")
+@click.option("--mcp_config", "mcp_config_path", default="mcp_config.json",help="MCP 配置文件路径（默认为 mcp_config.json）")
+@click.option("--agent_url", "agent_url", default="",help="Agent Card中对外展示和访问的地址")
+def main(host, port, agent_prompt_file, model_name, provider, mcp_config_path, agent_url=""):
     skill = AgentSkill(
         id="weather_search",
         name="Search weather",
@@ -52,8 +57,8 @@ def main(host: str, port: int):
         capabilities=AgentCapabilities(streaming=True),
         skills=[skill],
     )
-
-    adk_agent = create_agent()
+    mcptools = load_mcp_tools(mcp_config_path=mcp_config_path)
+    adk_agent = create_agent(model=model_name, provider=provider, mcptools=mcptools)
     runner = Runner(
         app_name=agent_card.name,
         agent=adk_agent,

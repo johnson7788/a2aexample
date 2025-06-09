@@ -104,10 +104,6 @@ async def app_lifespan(context: Dict[str, Any]):
 @click.option("--log-level", "log_level", default="info", help="Uvicorn log level.")
 def cli_main(host: str, port: int, log_level: str):
     """Command Line Interface to start the Airbnb Agent server."""
-    if not os.getenv("GOOGLE_API_KEY"):
-        print("GOOGLE_API_KEY environment variable not set.", file=sys.stderr)
-        sys.exit(1)
-
     async def run_server_async():
         async with app_lifespan(app_context):
             if not app_context.get("mcp_tools"):

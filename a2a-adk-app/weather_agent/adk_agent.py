@@ -37,7 +37,7 @@ def create_model(model:str, provider: str):
     else:
         raise ValueError(f"Unsupported provider: {provider}")
 
-def create_agent(model, provider, mcptools) -> LlmAgent:
+def create_agent(model, provider, mcptools=[]) -> LlmAgent:
     """Constructs the ADK agent."""
     return LlmAgent(
         model="gemini-2.5-flash-preview-04-17",

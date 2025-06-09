@@ -65,3 +65,4 @@ def load_mcp_tools(mcp_config_path):
         else:
             raise ValueError(f"无效的MCP配置, {server_name}")
         mcp_tools.append(client)
+    return mcp_tools

@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "Weather": {
+    "PostCode": {
       "command": "uv",
       "args": [
         "run",
@@ -8,7 +8,7 @@
         "fastmcp",
         "fastmcp",
         "run",
-        "mcpserver/weather_tool.py"
+        "mcpserver/postcode_tool.py"
       ]
     }
   }

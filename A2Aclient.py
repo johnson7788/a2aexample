@@ -93,7 +93,7 @@ class A2AClientWrapper:
         }
 
         # 如果支持streaming，就一边收，一边yield
-        response_stream = self.client.send_task_streaming(payload)
+        response_stream = self.client.send_message_streaming(payload)
         async for result in response_stream:
             print(f"收到的结果信息是: {result}")
             if result and result.result:

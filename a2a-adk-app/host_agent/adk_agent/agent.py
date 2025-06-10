@@ -7,6 +7,7 @@ import asyncio
 import os
 import logging
 
+from google.adk.models.lite_llm import LiteLlm
 from google.adk import Agent
 from google.adk.agents.readonly_context import ReadonlyContext
 from google.adk.agents.callback_context import CallbackContext
@@ -25,7 +26,6 @@ from a2a.types import (
 )
 
 from dotenv import load_dotenv
-
 load_dotenv()
 
 
@@ -157,7 +157,7 @@ class RoutingAgent:
         provider = os.environ.get("MODEL_PROVIDER", "google")
         model = os.environ.get("LLM_MODEL", "gemini-2.5-flash-preview-04-17")
         agent_description = "This Routing agent orchestrates the decomposition of the user asking for weather forecast or airbnb accommodation"
-        logging.info(f"使用的模型供应商是: {provider}，模型是: {model}")
+        print(f"使用的模型供应商是: {provider}，模型是: {model}")
         model = create_model(model, provider)
         return Agent(
             model=model,

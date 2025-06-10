@@ -37,14 +37,14 @@ def create_model(model:str, provider: str):
     else:
         raise ValueError(f"Unsupported provider: {provider}")
 
-def create_agent(model, provider, mcptools=[]) -> LlmAgent:
+def create_agent(model, provider, agent_name,agent_description,agent_instruction, mcptools=[]) -> LlmAgent:
     """Constructs the ADK agent."""
     logging.info(f"使用的模型供应商是: {provider}，模型是: {model}")
     model = create_model(model, provider)
     return LlmAgent(
         model=model,
-        name="weather_agent",
-        description="An agent that can help questions about weather",
-        instruction=f"""You are a specialized weather forecast assistant. Your primary function is to utilize the provided tools to retrieve and relay weather information in response to user queries. You must rely exclusively on these tools for data and refrain from inventing information. Ensure that all responses include the detailed output from the tools used and are formatted in Markdown""",
+        name=agent_name,
+        description=agent_description,
+        instruction=agent_instruction,
         tools=mcptools,
     )

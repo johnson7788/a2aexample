@@ -39,6 +39,11 @@ logging.basicConfig()
 @click.option("--mcp_config", "mcp_config_path", default="mcp_config.json",help="MCP 配置文件路径（默认为 mcp_config.json）")
 @click.option("--agent_url", "agent_url", default="",help="Agent Card中对外展示和访问的地址")
 def main(host, port, agent_prompt_file, model_name, provider, mcp_config_path, agent_url=""):
+    agent_card_name = "Weather Agent"
+    agent_name = "weather_agent"
+    agent_description = "An agent that can help questions about weather"
+    with  open(agent_prompt_file, "r") as f:
+        agent_instruction = f.read()
     skill = AgentSkill(
         id="weather_search",
         name="Search weather",
@@ -58,7 +63,7 @@ def main(host, port, agent_prompt_file, model_name, provider, mcp_config_path, a
         skills=[skill],
     )
     mcptools = load_mcp_tools(mcp_config_path=mcp_config_path)
-    adk_agent = create_agent(model=model_name, provider=provider, mcptools=mcptools)
+    adk_agent = create_agent(model=model_name, provider=provider, agent_name,agent_description,agent_instruction, mcptools=mcptools)
     runner = Runner(
         app_name=agent_card.name,
         agent=adk_agent,

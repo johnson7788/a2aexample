@@ -32,7 +32,7 @@ logging.basicConfig()
 
 @click.command()
 @click.option("--host", "host", default="localhost", help="服务器绑定的主机名（默认为 localhost,可以指定具体本机ip）")
-@click.option("--port", "port", default=10005,help="服务器监听的端口号（默认为 10005）")
+@click.option("--port", "port", default=10002,help="服务器监听的端口号（默认为 10002）")
 @click.option("--prompt", "agent_prompt_file", default="prompt.txt",help="Agent 的 prompt 文件路径（默认为 prompt.txt）")
 @click.option("--model", "model_name", default="deepseek-chat",help="使用的模型名称（如 deepseek-chat）")
 @click.option("--provider", "provider", default="deepseek", type=click.Choice(["google","openai", "deepseek", "ali"]),help="模型提供方名称（如 deepseek、openai 等）")

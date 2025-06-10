@@ -63,7 +63,7 @@ def main(host, port, agent_prompt_file, model_name, provider, mcp_config_path, a
         skills=[skill],
     )
     mcptools = load_mcp_tools(mcp_config_path=mcp_config_path)
-    adk_agent = create_agent(model=model_name, provider=provider, agent_name,agent_description,agent_instruction, mcptools=mcptools)
+    adk_agent = create_agent(model_name, provider, agent_name,agent_description,agent_instruction, mcptools=mcptools)
     runner = Runner(
         app_name=agent_card.name,
         agent=adk_agent,

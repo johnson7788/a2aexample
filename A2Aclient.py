@@ -4,8 +4,26 @@ import json
 import asyncio
 import urllib
 from uuid import uuid4
-from A2AServer.common.client import A2AClient, A2ACardResolver
-from A2AServer.common.A2Atypes import TaskState,TextPart,TaskArtifactUpdateEvent,TaskStatusUpdateEvent
+import httpx
+from a2a.client import A2AClient, A2ACardResolver
+from a2a.types import (
+    Part,
+    TextPart,
+    FilePart,
+    FileWithBytes,
+    Task,
+    TaskState,
+    Message,
+    TaskStatusUpdateEvent,
+    TaskArtifactUpdateEvent,
+    MessageSendConfiguration,
+    SendMessageRequest,
+    SendStreamingMessageRequest,
+    MessageSendParams,
+    GetTaskRequest,
+    TaskQueryParams,
+    JSONRPCErrorResponse,
+)
 # from common.types import Task, TextPart, FilePart, FileContent # 如有需要可以加上
 from typing import AsyncIterator
 
@@ -28,16 +46,16 @@ class A2AClientWrapper:
         self.notification_receiver_port = None
 
     async def setup(self):
-        resolver = A2ACardResolver(self.agent_url)
-        card = resolver.get_agent_card()
-        print("======= Agent Card ========")
-        print(card.model_dump_json(exclude_none=True))
-        self.client = A2AClient(agent_card=card)
-        self.streaming = card.capabilities.streaming
-
-        notif_receiver_parsed = urllib.parse.urlparse(self.push_notification_receiver)
-        self.notification_receiver_host = notif_receiver_parsed.hostname
-        self.notification_receiver_port = notif_receiver_parsed.port
+        async with httpx.AsyncClient(timeout=30, headers={}) as httpx_client:
+            resolver = A2ACardResolver(httpx_client, self.agent_url)
+            card = await resolver.get_agent_card()
+            print("======= Agent Card ========")
+            print(card.model_dump_json(exclude_none=True))
+            self.client = A2AClient(httpx_client, agent_card=card)
+            self.streaming = card.capabilities.streaming
+            notif_receiver_parsed = urllib.parse.urlparse(self.push_notification_receiver)
+            self.notification_receiver_host = notif_receiver_parsed.hostname
+            self.notification_receiver_port = notif_receiver_parsed.port
 
     async def run(self, prompt: str):
         if self.client is None:
@@ -161,6 +179,6 @@ class A2AClientWrapper:
 if __name__ == "__main__":
     async def main():
         session_id = time.strftime("%Y%m%d%H%M%S",time.localtime())
-        wrapper = A2AClientWrapper(session_id=session_id, agent_url="http://localhost:10006")
-        await wrapper.run("保障劳动者加班的法律条文有哪些?")
+        wrapper = A2AClientWrapper(session_id=session_id, agent_url="http://localhost:10005")
+        await wrapper.run("北京的今天的天气是?")
     asyncio.run(main())

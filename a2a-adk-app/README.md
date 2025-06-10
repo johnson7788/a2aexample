@@ -33,20 +33,20 @@
 3. **Python 3.13：** 运行 a2a-sdk 所需。
 4. **配置 .env 文件**
 
-* 在 `airbnb_agent` 和 `weather_agent` 文件夹中创建 `.env` 文件，内容如下：
+* 在 `postcode_agent` 和 `weather_agent` 文件夹中创建 `.env` 文件，内容如下：
 
 ```bash
-GOOGLE_API_KEY="your_api_key_here" 
+GOOGLE_API_KEY=xxxx
+DEEPSEEK_API_KEY=sk-f
 ```
 
 * 在 `host_agent/adk_agent` 文件夹中创建 `.env` 文件，内容如下：
 
 ```bash
-GOOGLE_GENAI_USE_VERTEXAI=TRUE
-GOOGLE_CLOUD_PROJECT="your project"
-GOOGLE_CLOUD_LOCATION=us-central1
-AIR_AGENT_URL=http://localhost:10002
-WEA_AGENT_URL=http://localhost:10001
+GOOGLE_API_KEY=xxxx
+DEEPSEEK_API_KEY=sk-f
+POSTCODE_AGENT_URL=http://localhost:10002
+WEATHER_AGENT_URL=http://localhost:10001
 ```
 
 ## 1. 启动 Airbnb 服务

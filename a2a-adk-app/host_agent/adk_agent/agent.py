@@ -5,6 +5,7 @@ import httpx
 from typing import Any
 import asyncio
 import os
+import logging
 
 from google.adk import Agent
 from google.adk.agents.readonly_context import ReadonlyContext
@@ -26,6 +27,41 @@ from a2a.types import (
 from dotenv import load_dotenv
 
 load_dotenv()
+
+
+def create_model(model:str, provider: str):
+    """
+    创建模型，返回字符串或者LiteLlm
+    LiteLlm(model="deepseek/deepseek-chat", api_key="xxx", api_base="")
+    :return:
+    """
+    if provider == "google":
+        # google的模型直接使用名称
+        assert os.environ.get("GOOGLE_API_KEY"), "GOOGLE_API_KEY is not set"
+        return model
+    elif provider == "openai":
+        # openai的模型需要使用LiteLlm
+        assert os.environ.get("OPENAI_API_KEY"), "OPENAI_API_KEY is not set"
+        if not model.startswith("openai/"):
+            # 表示兼容openai的模型请求
+            model = "openai/" + model
+        return LiteLlm(model=model, api_key=os.environ.get("OPENAI_API_KEY"), api_base="https://api.openai.com/v1")
+    elif provider == "deepseek":
+        # deepseek的模型需要使用LiteLlm
+        assert os.environ.get("DEEPSEEK_API_KEY"),  "DEEPSEEK_API_KEY is not set"
+        if not model.startswith("openai/"):
+            # 表示兼容openai的模型请求
+            model = "openai/" + model
+        return LiteLlm(model=model, api_key=os.environ.get("DEEPSEEK_API_KEY"), api_base="https://api.deepseek.com/v1")
+    elif provider == "ali":
+        # huggingface的模型需要使用LiteLlm
+        assert os.environ.get("ALI_API_KEY"), "ALI_API_KEY is not set"
+        if not model.startswith("openai/"):
+            # 表示兼容openai的模型请求
+            model = "openai/" + model
+        return LiteLlm(model=model, api_key=os.environ.get("ALI_API_KEY"), api_base="https://dashscope.aliyuncs.com/compatible-mode/v1")
+    else:
+        raise ValueError(f"Unsupported provider: {provider}")
 
 
 def convert_part(part: Part, tool_context: ToolContext):
@@ -117,17 +153,21 @@ class RoutingAgent:
         return instance
 
     def create_agent(self) -> Agent:
+        """Constructs the ADK agent."""
+        provider = os.environ.get("MODEL_PROVIDER", "google")
+        model = os.environ.get("LLM_MODEL", "gemini-2.5-flash-preview-04-17")
+        agent_description = "This Routing agent orchestrates the decomposition of the user asking for weather forecast or airbnb accommodation"
+        logging.info(f"使用的模型供应商是: {provider}，模型是: {model}")
+        model = create_model(model, provider)
         return Agent(
-            model="gemini-2.5-flash-preview-04-17",
+            model=model,
             name="Routing_agent",
+            description=agent_description,
             instruction=self.root_instruction,
-            before_model_callback=self.before_model_callback,
-            description=(
-                "This Routing agent orchestrates the decomposition of the user asking for weather forecast or airbnb accommodation"
-            ),
             tools=[
                 self.send_message,
             ],
+            before_model_callback=self.before_model_callback,
         )
 
     def root_instruction(self, context: ReadonlyContext) -> str:

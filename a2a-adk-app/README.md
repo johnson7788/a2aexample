@@ -28,12 +28,11 @@
 
 在本地运行该应用前，请确保已安装以下内容：
 
-1. **Node.js：** 用于运行 Airbnb MCP 服务端（如果要本地测试其功能）。
 2. **uv：** 本项目所用的 Python 包管理工具，安装指南见：[https://docs.astral.sh/uv/getting-started/installation/](https://docs.astral.sh/uv/getting-started/installation/)
 3. **Python 3.13：** 运行 a2a-sdk 所需。
 4. **配置 .env 文件**
 
-* 在 `postcode_agent` 和 `weather_agent` 文件夹中创建 `.env` 文件，内容如下：
+* 在 `postcode_agent` 和 `weather_agent` 文件夹中创建 `.env` 文件，内容如下，二选1即可。
 
 ```bash
 GOOGLE_API_KEY=xxxx
@@ -49,12 +48,12 @@ POSTCODE_AGENT_URL=http://localhost:10002
 WEATHER_AGENT_URL=http://localhost:10001
 ```
 
-## 1. 启动 Airbnb 服务
+## 1. 启动 postCode Agent 服务
 
 运行远程服务端：
 
 ```bash
-cd airbnb_agent
+cd postcode_agent
 uv run .
 ```
 

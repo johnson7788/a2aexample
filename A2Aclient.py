@@ -216,7 +216,7 @@ async def completeTask(
 # 作为脚本运行时调用
 if __name__ == "__main__":
     async def main():
-        agent = "http://localhost:10005"
+        agent = "http://localhost:10002"
         session = 0
         history = False
         use_push_notifications = False

@@ -1,2 +1,7 @@
 a2a-sdk
 uvicorn
+google-adk
+gradio
+mcp
+litellm
+asyncclick

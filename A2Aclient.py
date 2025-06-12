@@ -151,6 +151,8 @@ async def completeTask(
                     params=TaskQueryParams(id=taskId),
                 )
             )
+            print(f"taskResult类型:")
+            print(type(taskResult.root))  # 看是否是 JSONRPCErrorResponse
             taskResult = taskResult.root.result
     else:
         try:

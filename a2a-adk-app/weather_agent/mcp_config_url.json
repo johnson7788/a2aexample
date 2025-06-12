@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "Weather": {
+      "url": "http://127.0.0.1:7007/sse"
+    }
+  }
+}

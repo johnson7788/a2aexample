@@ -19,3 +19,11 @@ AttributeError: 'JSONRPCErrorResponse' object has no attribute 'result'
 
 Process finished with exit code 1
 ```
+
+fastmcp==2.8.0会报错，使用fastmcp==2.2.5 
+```bash
+    报错
+        result = text_check(userInput=user_input_text, Threshold=Threshold)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: 'FunctionTool' object is not callable
+```

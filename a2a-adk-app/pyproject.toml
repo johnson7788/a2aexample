@@ -15,4 +15,5 @@ dependencies = [
     "mcp>=1.9.0",
     "litellm",
     "asyncclick",
+    "fastmcp==2.2.5",
 ]

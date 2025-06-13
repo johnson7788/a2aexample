@@ -5,4 +5,4 @@ gradio
 mcp
 litellm
 asyncclick
-fastmcp
+fastmcp==2.2.5

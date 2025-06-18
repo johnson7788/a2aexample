@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Python: host app",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/a2a-adk-app/host_agent/app.py",
+        "console": "integratedTerminal",
+        "justMyCode": false,
+        "python": "/Users/admin/miniforge3/envs/adk/bin/python"
+      }
+    ]
+  }

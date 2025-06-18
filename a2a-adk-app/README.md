@@ -83,6 +83,12 @@ uv run app.py
 * “告诉我加州洛杉矶的邮编”
 * 
 
+## 异常报错
+当MCP出现timeout时，可以先用uv测试下依赖包是否正常
+cd weather_agent
+uv run --with fastmcp fastmcp  run  mcpserver/weather_tool.py
+
+
 ## 参考资料
 
 * [https://github.com/google/a2a-python](https://github.com/google/a2a-python)

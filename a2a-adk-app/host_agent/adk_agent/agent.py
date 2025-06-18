@@ -118,7 +118,7 @@ class RoutingAgent:
 
     # Asynchronous part of initialization
     async def _async_init_components(self, remote_agent_addresses: List[str]):
-        # Use a single httpx.AsyncClient for all card resolutions for efficiency
+        # 构造远程连接，并从每个地址抓取 agent 的元数据（name, description）用于后续分配。
         async with httpx.AsyncClient(timeout=30) as client:
             for address in remote_agent_addresses:
                 card_resolver = A2ACardResolver(client, address) # Constructor is sync

@@ -8,7 +8,7 @@
 import os
 import json
 import sys
-from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset, StdioServerParameters, SseServerParams
+from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset, StdioServerParameters, SseServerParams,StdioConnectionParams
 
 
 def load_mcp_config_from_file(config_path="mcp_config.json") -> dict:
@@ -47,19 +47,26 @@ def load_mcp_tools(mcp_config_path):
     for server_name, conf in servers_cfg.items():
         if "url" in conf:  # SSE server
             client = MCPToolset(
-                connection_params=SseServerParams(
-                    url=conf["url"],
-                    headers=conf.get("headers"),
-                    timeout=conf.get("timeout", 5),
-                    sse_read_timeout=conf.get("sse_read_timeout", 300)
+                connection_params=StdioConnectionParams(
+                    # 工具的调用延迟,最大30秒， MCP初始化延迟，最大5秒
+                    timeout=30,
+                    server_params=SseServerParams(
+                        url=conf["url"],
+                        headers=conf.get("headers"),
+                        timeout=conf.get("timeout", 5),
+                        sse_read_timeout=conf.get("sse_read_timeout", 300)
+                    )
                 )
             )
         elif "command" in conf:  # Local process-based server
             client = MCPToolset(
-                connection_params=StdioServerParameters(
-                    command=conf.get("command"),
-                    args=conf.get("args", []),
-                    env=conf.get("env", {})
+                connection_params=StdioConnectionParams(
+                    timeout=30,
+                    server_params=StdioServerParameters(
+                        command=conf.get("command"),
+                        args=conf.get("args", []),
+                        env=conf.get("env", {})
+                    )
                 )
             )
         else:
